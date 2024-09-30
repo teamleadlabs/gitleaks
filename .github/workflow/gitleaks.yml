@@ -1,0 +1,19 @@
+name: GitLeaks
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 4 * * *" # run once a day at 4 AM
+jobs:
+  scan:
+    name: GitLeaks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: GitLeaks/GitLeaks-action@v2
+        env:
+          GitHub_TOKEN: ${{ secrets.GitHub_TOKEN }}
+          GitLeaks_LICENSE: ${{ secrets.GitLeaks_LICENSE}} # Only required for Organizations, not personal accounts.
